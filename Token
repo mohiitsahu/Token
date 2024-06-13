@@ -1,0 +1,27 @@
+pragma solidity 0.8.18;
+
+contract MyToken {
+    string public tokenName;
+    string public tokenAbbrv;
+    uint public totalSupply;
+
+    mapping(address => uint) public balances;
+
+    constructor(string memory _name, string memory _abbrv, uint _initialSupply) {
+        tokenName = _name;
+        tokenAbbrv = _abbrv;
+        totalSupply = _initialSupply;
+        balances[msg.sender] = _initialSupply;
+    }
+
+    function mint(address _to, uint _value) public {
+        totalSupply += _value;
+        balances[_to] += _value;
+    }
+
+    function burn(address _from, uint _value) public {
+        require(balances[_from] >= _value, "Insufficient balance to burn");
+        totalSupply -= _value;
+        balances[_from] -= _value;
+    }
+}
